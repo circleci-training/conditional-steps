@@ -1,0 +1,26 @@
+version: 2.1
+jobs:
+  build:
+    parameters:
+      preinstall:
+        type: boolean
+        default: false
+    machine: true
+    steps:
+      - run: echo "Preinstall is set to << parameters.preinstall >>"
+      - when:
+          condition: << parameters.preinstall >>
+          steps:
+            - run: echo "Yes, let's preinstall."
+      - unless:
+          condition: << parameters.preinstall >>
+          steps:
+            - run: echo "Nooooo, don't preinstall."
+workflows:
+  build-workflow:
+    jobs:
+      - build:
+          preinstall: false
+      - build:
+          preinstall: true
+      - build
